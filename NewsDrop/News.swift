@@ -11,15 +11,19 @@ struct News {
     
     let site:String
     let title:String
+    let siteUrl:String
+    
     static let url = "http://webhose.io/filterWebContent?token=42e28899-ec4a-4758-bf49-735c1eb6b793&format=json&ts=1523024626100&sort=crawled&q=site_type%3Anews%20performance_score%3A%3E9%20language%3Aenglish"
     
     // Initializes a News object using an array
     init(json:[String:Any]) throws {
         guard let site = json["site"] as? String else {throw SerializationError.missing("site is missing")}
         guard let title = json["title"] as? String else {throw SerializationError.missing("title is missing")}
+        guard let siteUrl = json["url"] as? String else {throw SerializationError.missing("site url is missing")}
         
         self.site = site
         self.title = title
+        self.siteUrl = siteUrl
     }
     
     enum SerializationError:Error {
@@ -66,4 +70,3 @@ struct News {
     }
     
 }
-

@@ -56,8 +56,23 @@ class TableViewController: UITableViewController {
     // set cells to our tableRows
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        
+        // set cell's text and make the text wrap
         cell.textLabel?.text = String(tableRows[indexPath.row])
+        cell.textLabel?.numberOfLines = 0
+        cell.textLabel?.lineBreakMode = NSLineBreakMode.byWordWrapping
         return cell
+    }
+    
+    // on-click event for each row
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("row selected: \(indexPath.row)")
+        
+        // if the row clicked has been filled with an article, go to url of article
+        if !tableRows[indexPath.row].isEmpty {
+            let url = URL(string: articles[indexPath.row].siteUrl)
+            UIApplication.shared.openURL(url!)
+        }
     }
     
     // reloads table once we have the news
