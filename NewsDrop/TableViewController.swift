@@ -14,9 +14,20 @@ class TableViewController: UITableViewController {
     
     // list of strings for the table with temp values until articles are gathered
     var tableRows:[String] = ["", "", "", "", "", "", "", "", "", ""]
+    
+    var refresher: UIRefreshControl!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        tableView.contentInset = UIEdgeInsets(top: 120, left: 0, bottom: 0, right: 0)
+        
+        // Pull down to refresh
+        refresher = UIRefreshControl()
+        refresher.attributedTitle = NSAttributedString(string: "Pull for news")
+        refresher.addTarget(self, action: #selector(TableViewController.reloadTableWithNews), for: UIControlEvents.valueChanged)
+        tableView.addSubview(refresher)
+        
         // Asynchronously loading News articles
         News.getNews { (results:[News]) in
             for result in results {
@@ -56,7 +67,6 @@ class TableViewController: UITableViewController {
     // set cells to our tableRows
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        
         // set cell's text and make the text wrap
         cell.textLabel?.text = String(tableRows[indexPath.row])
         cell.textLabel?.numberOfLines = 0
@@ -78,6 +88,7 @@ class TableViewController: UITableViewController {
     // reloads table once we have the news
     @objc func reloadTableWithNews() {
         DispatchQueue.main.async {
+            self.refresher.endRefreshing()
             self.tableView.reloadData()
         }
     }
