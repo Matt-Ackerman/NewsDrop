@@ -12,39 +12,75 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 
     @IBOutlet weak var tableView: UITableView!
     
+    var refresher: UIRefreshControl!
+
     // articles gathered from api
     var articles = [News]()
     
     // list of strings for the table with temp values until articles are gathered
-    var tableRows:[String] = ["", "", "", "", "", "", "", "", "", ""]
+    var tableRows:[String] = [
+        "", "", "", "", "",
+        "", "", "", "", "",
+        "", "", "", "", "",
+        "", "", "", "", ""
+    ]
     
-    var refresher: UIRefreshControl!
+    @IBOutlet weak var timeLeftLabel: UILabel!
+    
+    var releaseDate: Date?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Timer
+        timeLeftLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
+        let releaseDateString = "2016-03-02 22:00:00"
+        let releaseDateFormatter = DateFormatter()
+        releaseDateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        releaseDate = releaseDateFormatter.date(from:releaseDateString)!
+        
+        Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.countDownDate), userInfo: nil, repeats: true)
+
+        
+        
+        // Table
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         
-        // Pull down to refresh
+        // Refresh button
         refresher = UIRefreshControl()
         refresher.attributedTitle = NSAttributedString(string: "Pull for news")
-        refresher.addTarget(self, action: #selector(TableViewController.reloadTableWithNews), for: UIControlEvents.valueChanged)
+        refresher.frame.origin = CGPoint(x: 20, y: 10)
+        refresher.addTarget(self, action: #selector(ViewController.reloadTableWithNews), for: UIControlEvents.valueChanged)
         tableView.addSubview(refresher)
         
-        // Asynchronously loading News articles
-        News.getNews { (results:[News]) in
-            for result in results {
-                print(result)
-                self.articles.append(result)
-            }
-            self.setText()
-        }
+        getNews()
+    }
+    
+    // Timer
+    @objc func countDownDate() {
+        let date = Date()
+        let calendar = Calendar.current
+        
+        let diffDateComponents = calendar.dateComponents([.day, .hour, .minute, .second], from: date, to: releaseDate!)
+        let countdown = "Days \(diffDateComponents.day ?? <#default value#>),  Hours: \(String(describing: diffDateComponents.hour)), Minutes: \(String(describing: diffDateComponents.minute)), Seconds: \(String(describing: diffDateComponents.second))"
+        print(countdown)
+        timeLeftLabel.text = countdown
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+    
+    func getNews() {
+        // Asynchronously loading News articles
+        News.getNews { (results:[News]) in
+            for result in results {
+                self.articles.append(result)
+            }
+            self.setText()
+        }
     }
     
     // sets our table rows to our articles
@@ -59,7 +95,17 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             articles[6].site + ": " +  articles[6].title,
             articles[7].site + ": " +  articles[7].title,
             articles[8].site + ": " +  articles[8].title,
-            articles[9].site + ": " +  articles[9].title
+            articles[9].site + ": " +  articles[9].title,
+            articles[10].site + ": " +  articles[10].title,
+            articles[11].site + ": " +  articles[11].title,
+            articles[12].site + ": " +  articles[12].title,
+            articles[13].site + ": " +  articles[13].title,
+            articles[14].site + ": " +  articles[14].title,
+            articles[15].site + ": " +  articles[15].title,
+            articles[16].site + ": " +  articles[16].title,
+            articles[17].site + ": " +  articles[17].title,
+            articles[18].site + ": " +  articles[18].title,
+            articles[19].site + ": " +  articles[19].title
         ]
         reloadTableWithNews()
     }
@@ -93,8 +139,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     // reloads table once we have the news
     @objc func reloadTableWithNews() {
         DispatchQueue.main.async {
-            self.refresher.endRefreshing()
+            self.getNews()
             self.tableView.reloadData()
+            self.refresher.endRefreshing()
         }
     }
     
