@@ -36,20 +36,12 @@
                                     <outlet property="delegate" destination="ZCY-g2-aZw" id="MyP-HV-NCn"/>
                                 </connections>
                             </tableView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YPu-XD-rWZ">
-                                <rect key="frame" x="75" y="44" width="225" height="86"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="yqS-2d-i4O"/>
                     </view>
                     <connections>
                         <outlet property="tableView" destination="SG0-x4-QmE" id="IxC-0l-ntA"/>
-                        <outlet property="timeLeftLabel" destination="YPu-XD-rWZ" id="fDE-m0-G6u"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2o6-fI-drA" userLabel="First Responder" sceneMemberID="firstResponder"/>

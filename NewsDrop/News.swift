@@ -13,7 +13,7 @@ struct News {
     let title:String
     let siteUrl:String
     
-    static let url = "http://192.168.1.5:8999/api"
+    static let url = "http://192.168.1.3:8999/api"
     
     // Initializes a News object using an array
     init(json:[String:Any]) throws {

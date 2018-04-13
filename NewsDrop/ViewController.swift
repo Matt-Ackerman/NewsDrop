@@ -25,23 +25,19 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         "", "", "", "", ""
     ]
     
-    @IBOutlet weak var timeLeftLabel: UILabel!
-    
-    var releaseDate: Date?
+    // User default values
+    let userDefaults = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Timer
-        timeLeftLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
-        let releaseDateString = "2016-03-02 22:00:00"
-        let releaseDateFormatter = DateFormatter()
-        releaseDateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        releaseDate = releaseDateFormatter.date(from:releaseDateString)!
-        
-        Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.countDownDate), userInfo: nil, repeats: true)
-
-        
+        let currentDate = Date()
+        let calendar = Calendar.current
+        let hour = calendar.component(.hour, from: currentDate)
+        let minutes = calendar.component(.minute, from: currentDate)
+        print(currentDate)
+        print(hour)
+        print(minutes)
         
         // Table
         tableView.dataSource = self
@@ -57,17 +53,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         getNews()
     }
-    
-    // Timer
-    @objc func countDownDate() {
-        let date = Date()
-        let calendar = Calendar.current
-        
-        let diffDateComponents = calendar.dateComponents([.day, .hour, .minute, .second], from: date, to: releaseDate!)
-        let countdown = "Days \(diffDateComponents.day ?? <#default value#>),  Hours: \(String(describing: diffDateComponents.hour)), Minutes: \(String(describing: diffDateComponents.minute)), Seconds: \(String(describing: diffDateComponents.second))"
-        print(countdown)
-        timeLeftLabel.text = countdown
-    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -81,6 +66,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             }
             self.setText()
         }
+        
+        // Save datetime of this table gather
+        userDefaults.setValue(Date(), forKey: "dateOfLastTable")
+        userDefaults.synchronize()
     }
     
     // sets our table rows to our articles
@@ -107,7 +96,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             articles[18].site + ": " +  articles[18].title,
             articles[19].site + ": " +  articles[19].title
         ]
-        reloadTableWithNews()
     }
     
     // return how many rows we want in our table
@@ -139,10 +127,35 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     // reloads table once we have the news
     @objc func reloadTableWithNews() {
         DispatchQueue.main.async {
+            print(" --- refreshed with pull down ---")
             self.getNews()
             self.tableView.reloadData()
             self.refresher.endRefreshing()
         }
+    }
+    
+    func decideToallowRefresh() {
+        // Gather DateTime of last refresh
+        if let lastDateRefreshed = userDefaults.value(forKey: "dateOfLastTable") {
+            
+            let currentDate = Date()
+            let calendar = Calendar.current
+            let currentHour = calendar.component(.hour, from: currentDate)
+            
+            let hourOfLastCheck = calendar.component(.hour, from: lastDateRefreshed as! Date)
+            
+            // If last check received morning news and its now time for night news
+            if (hourOfLastCheck < 19 && currentHour > 19) {
+                // If last check received night news but it wasnt today
+            } else if (hourOfLastCheck > 19 && (calendar.isDateInToday(lastDateRefreshed as! Date) == false)) {
+                
+            }
+            
+            
+        }
+        
+        
+        
     }
     
 }
