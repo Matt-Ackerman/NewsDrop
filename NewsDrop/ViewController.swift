@@ -59,6 +59,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func getNews() {
+        decideToallowRefresh()
+        
         // Asynchronously loading News articles
         News.getNews { (results:[News]) in
             for result in results {
@@ -144,13 +146,30 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             
             let hourOfLastCheck = calendar.component(.hour, from: lastDateRefreshed as! Date)
             
-            // If last check received morning news and its now time for night news
-            if (hourOfLastCheck < 19 && currentHour > 19) {
-                // If last check received night news but it wasnt today
-            } else if (hourOfLastCheck > 19 && (calendar.isDateInToday(lastDateRefreshed as! Date) == false)) {
+            // If last check received morning news and now it's time for night news
+            // or
+            // If last check received night news but it wasn't today
+            if ( (hourOfLastCheck < 19 && currentHour > 19) ||
+                 (hourOfLastCheck > 19 && (calendar.isDateInToday(lastDateRefreshed as! Date) == false)) ) {
                 
+                // Allow refresh
+                print(1)
             }
             
+            // If last check received night news and now it's time for morning news
+            // or
+            // If last check received morning news but it wasn't today
+            else if ( (hourOfLastCheck > 19 && currentHour < 19) ||
+                      (hourOfLastCheck < 19 && (calendar.isDateInToday(lastDateRefreshed as! Date) == false)) ) {
+                
+                // Allow refresh
+                print(2)
+            }
+            
+            // Display countdown to either 7 am or 7 pm
+            else {
+                
+            }
             
         }
         
