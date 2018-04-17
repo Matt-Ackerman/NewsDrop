@@ -10,6 +10,8 @@ import UIKit
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
+    @IBOutlet weak var timeOfNextAvailNews: UILabel!
+    
     @IBOutlet weak var tableView: UITableView!
     
     var refresher: UIRefreshControl!
@@ -153,7 +155,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                  (hourOfLastCheck > 19 && (calendar.isDateInToday(lastDateRefreshed as! Date) == false)) ) {
                 
                 // Allow refresh
-                print(1)
+                timeOfNextAvailNews.text = "Time of your next available drop: Now"
             }
             
             // If last check received night news and now it's time for morning news
@@ -163,14 +165,18 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                       (hourOfLastCheck < 19 && (calendar.isDateInToday(lastDateRefreshed as! Date) == false)) ) {
                 
                 // Allow refresh
-                print(2)
+                timeOfNextAvailNews.text = "Time of your next available drop: Now"
             }
             
             // Display countdown to either 7 am or 7 pm
             else {
-                
+                if (currentHour > 19) {
+                    timeOfNextAvailNews.text = "Time of your next available drop: 7 am"
+                }
+                else if (currentHour < 19) {
+                    timeOfNextAvailNews.text = "Time of your next available drop: 7 pm"
+                }
             }
-            
         }
         
         
@@ -178,4 +184,3 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
 }
-

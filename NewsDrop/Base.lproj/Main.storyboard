@@ -36,12 +36,21 @@
                                     <outlet property="delegate" destination="ZCY-g2-aZw" id="MyP-HV-NCn"/>
                                 </connections>
                             </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Time of your next available drop:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2dJ-LT-M0M">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="98"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="1" green="0.35194825718432166" blue="0.32103444834136108" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="yqS-2d-i4O"/>
                     </view>
                     <connections>
                         <outlet property="tableView" destination="SG0-x4-QmE" id="IxC-0l-ntA"/>
+                        <outlet property="timeOfNextAvailNews" destination="2dJ-LT-M0M" id="BTn-TQ-3Fj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2o6-fI-drA" userLabel="First Responder" sceneMemberID="firstResponder"/>
