@@ -36,10 +36,17 @@
                                     <outlet property="delegate" destination="ZCY-g2-aZw" id="MyP-HV-NCn"/>
                                 </connections>
                             </tableView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Time of your next available drop:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2dJ-LT-M0M">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="98"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oEr-pa-S4g">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="96"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="1" green="0.35194825718432166" blue="0.32103444834136108" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="1" green="0.3519482572" blue="0.3210344483" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Pull down for refresh" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KM7-f0-8Hw">
+                                <rect key="frame" x="0.0" y="58" width="375" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -50,7 +57,7 @@
                     </view>
                     <connections>
                         <outlet property="tableView" destination="SG0-x4-QmE" id="IxC-0l-ntA"/>
-                        <outlet property="timeOfNextAvailNews" destination="2dJ-LT-M0M" id="BTn-TQ-3Fj"/>
+                        <outlet property="timeOfNextAvailableNewsDrop" destination="KM7-f0-8Hw" id="da7-TK-Era"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2o6-fI-drA" userLabel="First Responder" sceneMemberID="firstResponder"/>

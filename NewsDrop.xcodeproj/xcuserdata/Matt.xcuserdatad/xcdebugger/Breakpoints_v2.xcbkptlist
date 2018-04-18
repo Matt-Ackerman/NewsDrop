@@ -74,60 +74,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NewsDrop/ViewController.swift"
-            timestampString = "545625964.546416"
+            timestampString = "545708118.682189"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "66"
-            endingLineNumber = "66"
-            landmarkName = "getNews()"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "NewsDrop.ViewController.getNews() -&gt; ()"
-                  moduleName = "NewsDrop"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/Matt/Documents/XCode/NewsDrop/NewsDrop/ViewController.swift"
-                  timestampString = "545273615.718945"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "52"
-                  endingLineNumber = "52"
-                  offsetFromSymbolStart = "20">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Array&lt;NewsDrop.News&gt;) -&gt; () in NewsDrop.ViewController.getNews() -&gt; ()"
-                  moduleName = "NewsDrop"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/Matt/Documents/XCode/NewsDrop/NewsDrop/ViewController.swift"
-                  timestampString = "545273615.721711"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "53"
-                  endingLineNumber = "53"
-                  offsetFromSymbolStart = "28">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "NewsDrop/ViewController.swift"
-            timestampString = "545625964.54661"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "70"
-            endingLineNumber = "70"
-            landmarkName = "getNews()"
+            startingLineNumber = "175"
+            endingLineNumber = "175"
+            landmarkName = "displayTimeOfNextRefresh(currentHour:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -138,13 +90,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NewsDrop/ViewController.swift"
-            timestampString = "545625964.546701"
+            timestampString = "545708118.68286"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "78"
-            endingLineNumber = "78"
-            landmarkName = "ViewController"
-            landmarkType = "3">
+            startingLineNumber = "153"
+            endingLineNumber = "153"
+            landmarkName = "shouldAllowRefresh()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -154,12 +106,44 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NewsDrop/ViewController.swift"
-            timestampString = "545625964.546783"
+            timestampString = "545708118.683254"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "154"
-            endingLineNumber = "154"
-            landmarkName = "decideToallowRefresh()"
+            startingLineNumber = "161"
+            endingLineNumber = "161"
+            landmarkName = "shouldAllowRefresh()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NewsDrop/ViewController.swift"
+            timestampString = "545708118.6836129"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "166"
+            endingLineNumber = "166"
+            landmarkName = "shouldAllowRefresh()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NewsDrop/ViewController.swift"
+            timestampString = "545708118.683972"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "170"
+            endingLineNumber = "170"
+            landmarkName = "shouldAllowRefresh()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

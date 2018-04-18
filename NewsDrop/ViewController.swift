@@ -10,11 +10,10 @@ import UIKit
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
-    @IBOutlet weak var timeOfNextAvailNews: UILabel!
-    
     @IBOutlet weak var tableView: UITableView!
-    
+    @IBOutlet weak var timeOfNextAvailableNewsDrop: UILabel!
     var refresher: UIRefreshControl!
+    let userDefaults = UserDefaults.standard
 
     // articles gathered from api
     var articles = [News]()
@@ -27,12 +26,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         "", "", "", "", ""
     ]
     
-    // User default values
-    let userDefaults = UserDefaults.standard
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        /*
         let currentDate = Date()
         let calendar = Calendar.current
         let hour = calendar.component(.hour, from: currentDate)
@@ -40,66 +37,24 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         print(currentDate)
         print(hour)
         print(minutes)
-        
-        // Table
+        */
+ 
+        // table for list of news articles
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         
-        // Refresh button
+        // refresh button
         refresher = UIRefreshControl()
         refresher.attributedTitle = NSAttributedString(string: "Pull for news")
         refresher.frame.origin = CGPoint(x: 20, y: 10)
         refresher.addTarget(self, action: #selector(ViewController.reloadTableWithNews), for: UIControlEvents.valueChanged)
         tableView.addSubview(refresher)
         
-        getNews()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-    }
-    
-    func getNews() {
-        decideToallowRefresh()
-        
-        // Asynchronously loading News articles
-        News.getNews { (results:[News]) in
-            for result in results {
-                self.articles.append(result)
-            }
-            self.setText()
-        }
-        
-        // Save datetime of this table gather
-        userDefaults.setValue(Date(), forKey: "dateOfLastTable")
-        userDefaults.synchronize()
-    }
-    
-    // sets our table rows to our articles
-    func setText() {
-        tableRows = [
-            articles[0].site + ": " +  articles[0].title,
-            articles[1].site + ": " +  articles[1].title,
-            articles[2].site + ": " +  articles[2].title,
-            articles[3].site + ": " +  articles[3].title,
-            articles[4].site + ": " +  articles[4].title,
-            articles[5].site + ": " +  articles[5].title,
-            articles[6].site + ": " +  articles[6].title,
-            articles[7].site + ": " +  articles[7].title,
-            articles[8].site + ": " +  articles[8].title,
-            articles[9].site + ": " +  articles[9].title,
-            articles[10].site + ": " +  articles[10].title,
-            articles[11].site + ": " +  articles[11].title,
-            articles[12].site + ": " +  articles[12].title,
-            articles[13].site + ": " +  articles[13].title,
-            articles[14].site + ": " +  articles[14].title,
-            articles[15].site + ": " +  articles[15].title,
-            articles[16].site + ": " +  articles[16].title,
-            articles[17].site + ": " +  articles[17].title,
-            articles[18].site + ": " +  articles[18].title,
-            articles[19].site + ": " +  articles[19].title
-        ]
     }
     
     // return how many rows we want in our table
@@ -128,59 +83,105 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
     }
     
-    // reloads table once we have the news
-    @objc func reloadTableWithNews() {
-        DispatchQueue.main.async {
-            print(" --- refreshed with pull down ---")
-            self.getNews()
-            self.tableView.reloadData()
-            self.refresher.endRefreshing()
+    // receive news
+    func getNews() {
+        // asynchronously loading News articles
+        News.getNews { (results:[News]) in
+            for result in results {
+                self.articles.append(result)
+            }
+            self.setText()
         }
+        
+        // save datetime of this table gather
+        userDefaults.setValue(Date(), forKey: "dateOfLastTable")
+        userDefaults.synchronize()
     }
     
-    func decideToallowRefresh() {
+    // reloads table once we have the news
+    @objc func reloadTableWithNews() {
+        if (shouldAllowRefresh() == true) {
+            DispatchQueue.main.async {
+                self.getNews()
+                self.tableView.reloadData()
+            }
+        }
+        self.refresher.endRefreshing()
+    }
+    
+    // sets our table rows to our articles
+    func setText() {
+        tableRows = [
+            articles[0].site + ": " +  articles[0].title,
+            articles[1].site + ": " +  articles[1].title,
+            articles[2].site + ": " +  articles[2].title,
+            articles[3].site + ": " +  articles[3].title,
+            articles[4].site + ": " +  articles[4].title,
+            articles[5].site + ": " +  articles[5].title,
+            articles[6].site + ": " +  articles[6].title,
+            articles[7].site + ": " +  articles[7].title,
+            articles[8].site + ": " +  articles[8].title,
+            articles[9].site + ": " +  articles[9].title,
+            articles[10].site + ": " +  articles[10].title,
+            articles[11].site + ": " +  articles[11].title,
+            articles[12].site + ": " +  articles[12].title,
+            articles[13].site + ": " +  articles[13].title,
+            articles[14].site + ": " +  articles[14].title,
+            articles[15].site + ": " +  articles[15].title,
+            articles[16].site + ": " +  articles[16].title,
+            articles[17].site + ": " +  articles[17].title,
+            articles[18].site + ": " +  articles[18].title,
+            articles[19].site + ": " +  articles[19].title
+        ]
+    }
+    
+    // Is it time to allow a refresh of the news?
+    func shouldAllowRefresh() -> Bool {
+        
+        let currentDate = Date()
+        let calendar = Calendar.current
+        let currentHour = calendar.component(.hour, from: currentDate)
+        
         // Gather DateTime of last refresh
         if let lastDateRefreshed = userDefaults.value(forKey: "dateOfLastTable") {
-            
-            let currentDate = Date()
-            let calendar = Calendar.current
-            let currentHour = calendar.component(.hour, from: currentDate)
             
             let hourOfLastCheck = calendar.component(.hour, from: lastDateRefreshed as! Date)
             
             // If last check received morning news and now it's time for night news
             // or
             // If last check received night news but it wasn't today
-            if ( (hourOfLastCheck < 19 && currentHour > 19) ||
-                 (hourOfLastCheck > 19 && (calendar.isDateInToday(lastDateRefreshed as! Date) == false)) ) {
-                
-                // Allow refresh
-                timeOfNextAvailNews.text = "Time of your next available drop: Now"
+            if ( (hourOfLastCheck < 19 && currentHour >= 19) ||
+                (hourOfLastCheck >= 19 && (calendar.isDateInToday(lastDateRefreshed as! Date) == false)) ) {
+                return true
             }
-            
+                
             // If last check received night news and now it's time for morning news
             // or
             // If last check received morning news but it wasn't today
-            else if ( (hourOfLastCheck > 19 && currentHour < 19) ||
-                      (hourOfLastCheck < 19 && (calendar.isDateInToday(lastDateRefreshed as! Date) == false)) ) {
-                
-                // Allow refresh
-                timeOfNextAvailNews.text = "Time of your next available drop: Now"
+            else if ( (hourOfLastCheck >= 19 && currentHour < 19) ||
+                (hourOfLastCheck < 19 && (calendar.isDateInToday(lastDateRefreshed as! Date) == false)) ) {
+                return true
             }
-            
-            // Display countdown to either 7 am or 7 pm
+                
             else {
-                if (currentHour > 19) {
-                    timeOfNextAvailNews.text = "Time of your next available drop: 7 am"
-                }
-                else if (currentHour < 19) {
-                    timeOfNextAvailNews.text = "Time of your next available drop: 7 pm"
-                }
+                displayTimeOfNextRefresh(currentHour: currentHour)
+                return false
             }
         }
-        
-        
-        
+        displayTimeOfNextRefresh(currentHour: currentHour)
+        return false
     }
+    
+    // This is called if it is not time to refresh the news. Displays next time to refresh.
+    func displayTimeOfNextRefresh(currentHour: Int?) {
+        if (currentHour! > 19) {
+            timeOfNextAvailableNewsDrop.text = "Next available drop: 7 am"
+        }
+        else if (currentHour! < 19) {
+            timeOfNextAvailableNewsDrop.text = "Next available drop: 7 pm"
+        }
+    }
+    
+    
     
 }
