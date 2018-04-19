@@ -26,18 +26,18 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         "", "", "", "", ""
     ]
     
+    let formatter = DateFormatter()
+    let userCleander = Calendar.current;
+    let requestedComponent : Set<Calendar.Component> = [
+        Calendar.Component.month,
+        Calendar.Component.day,
+        Calendar.Component.hour,
+        Calendar.Component.minute,
+        Calendar.Component.second
+    ]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        /*
-        let currentDate = Date()
-        let calendar = Calendar.current
-        let hour = calendar.component(.hour, from: currentDate)
-        let minutes = calendar.component(.minute, from: currentDate)
-        print(currentDate)
-        print(hour)
-        print(minutes)
-        */
  
         // table for list of news articles
         tableView.dataSource = self
@@ -50,6 +50,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         refresher.frame.origin = CGPoint(x: 20, y: 10)
         refresher.addTarget(self, action: #selector(ViewController.reloadTableWithNews), for: UIControlEvents.valueChanged)
         tableView.addSubview(refresher)
+        
+        let timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(timePrinter), userInfo: nil, repeats: true)
+        timer.fire()
         
     }
 
@@ -174,14 +177,53 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     // This is called if it is not time to refresh the news. Displays next time to refresh.
     func displayTimeOfNextRefresh(currentHour: Int?) {
-        if (currentHour! > 19) {
-            timeOfNextAvailableNewsDrop.text = "Next available drop: 7 am"
+    
+        if (currentHour! >= 19) {
+            //Next available drop: 7 am
+            userDefaults.setValue(Date(), forKey: "nextRefreshTime")
+            userDefaults.synchronize()
         }
         else if (currentHour! < 19) {
-            timeOfNextAvailableNewsDrop.text = "Next available drop: 7 pm"
+            //timeOfNextAvailableNewsDrop.text = "Next available drop: 7 pm"
+            // Set timer to tomorrow at 7 am
         }
+        
+        let timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(timePrinter), userInfo: nil, repeats: true)
+        
+        timer.fire()
+        
     }
     
+    @objc func timePrinter(morningNewsIsnext: Bool) -> Void {
+        
+        /*
+        if let nextRefreshTime = userDefaults.value(forKey: "nextRefreshTime") {
+            
+            
+            let oneHourFromNow = calendar.date(byAdding: .hour, value: 2, to: currentDate)
+            // create a date formatter
+            let formatter = DateFormatter()
+            formatter.dateFormat = "MM/dd/yyyy hh:mm:ss a"
+            
+            // convert the date to string using the date formatter
+            let oneHourFromNowAsString = formatter.string(from: oneHourFromNow!)
+            
+            let time = timeCalculator(dateFormat: "MM/dd/yyyy hh:mm:ss a", endTime: oneHourFromNowAsString)
+            timeOfNextAvailableNewsDrop.text = "\(time.month!) Months \(time.day!) Days \(time.minute!) Minutes \(time.second!) Seconds"
+            
+        }
+         */
+        
+    }
     
+    func timeCalculator(dateFormat: String, endTime: String, startTime: Date = Date()) -> DateComponents {
+        formatter.dateFormat = dateFormat
+        let _startTime = startTime
+        let _endTime = formatter.date(from: endTime)
+        
+        let timeDifference = userCleander.dateComponents(requestedComponent, from: _startTime, to: _endTime!)
+        let sec = timeDifference.second
+        return timeDifference
+    }
     
 }
