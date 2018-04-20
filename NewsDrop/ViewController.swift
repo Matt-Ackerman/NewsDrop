@@ -27,7 +27,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     ]
     
     let formatter = DateFormatter()
-    let userCleander = Calendar.current;
+    let userCalender = Calendar.current;
     let requestedComponent : Set<Calendar.Component> = [
         Calendar.Component.month,
         Calendar.Component.day,
@@ -50,9 +50,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         refresher.frame.origin = CGPoint(x: 20, y: 10)
         refresher.addTarget(self, action: #selector(ViewController.reloadTableWithNews), for: UIControlEvents.valueChanged)
         tableView.addSubview(refresher)
-        
-        let timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(timePrinter), userInfo: nil, repeats: true)
-        timer.fire()
         
     }
 
@@ -86,6 +83,35 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
     }
     
+    // reloads table once we have the news
+    @objc func reloadTableWithNews() {
+        if (shouldAllowRefresh() == true) {
+            DispatchQueue.main.async {
+                self.getNews()
+                self.tableView.reloadData()
+            }
+        } else {
+            let timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(timePrinter), userInfo: nil, repeats: true)
+            timer.fire()
+        }
+        self.refresher.endRefreshing()
+    }
+    
+    // Is it time to allow a refresh of the news?
+    func shouldAllowRefresh() -> Bool {
+        
+        // gather DateTime of last refresh
+        let nextRefreshTime = userDefaults.value(forKey: "nextRefreshTime") as! Date
+        
+        // if it is already past nextRefreshTime
+        if (nextRefreshTime < Date()) {
+            //displayTimeOfNextRefresh(currentHour: currentHour)
+            return true
+        } else {
+            return false
+        }
+    }
+    
     // receive news
     func getNews() {
         // asynchronously loading News articles
@@ -95,21 +121,71 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             }
             self.setText()
         }
-        
-        // save datetime of this table gather
-        userDefaults.setValue(Date(), forKey: "dateOfLastTable")
-        userDefaults.synchronize()
+        markThatUserGotNewsAndSetNextDate()
     }
     
-    // reloads table once we have the news
-    @objc func reloadTableWithNews() {
-        if (shouldAllowRefresh() == true) {
-            DispatchQueue.main.async {
-                self.getNews()
-                self.tableView.reloadData()
-            }
+    func markThatUserGotNewsAndSetNextDate() {
+        
+        let current = Date()
+        let calendar = Calendar.current
+        
+        // save datetime of this table gather
+        userDefaults.setValue(current, forKey: "dateOfLastNews")
+        userDefaults.synchronize()
+        
+        // get hour of table gather
+        let hourOfNewsCapture = calendar.component(.hour, from: current)
+        
+        // discover datetime of next available table gather
+        if (hourOfNewsCapture >= 19) {
+            //Next available drop: 7 am
+            let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: current)
+            let nextTime = Calendar.current.date(bySettingHour: 7, minute: 0, second: 0, of: tomorrow!)
+            userDefaults.setValue(nextTime, forKey: "nextRefreshTime")
+            userDefaults.synchronize()
+            
+        } else {
+            // Next available drop: 7 pm
+            let nextTime = Calendar.current.date(bySettingHour: 19, minute: 0, second: 0, of: current)
+            userDefaults.setValue(nextTime, forKey: "nextRefreshTime")
+            userDefaults.synchronize()
         }
-        self.refresher.endRefreshing()
+        
+    }
+    
+    // This is called if it is not time to refresh the news. Displays next time to refresh.
+    func displayTimeOfNextRefresh() {
+    
+        let timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(timePrinter), userInfo: nil, repeats: true)
+        
+        timer.fire()
+        
+    }
+    
+    @objc func timePrinter() -> Void {
+        
+        let nextTime = userDefaults.value(forKey: "nextRefreshTime") as! Date
+            
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MM/dd/yyyy hh:mm:ss a"
+            
+        // convert the date to string using the date formatter
+        let nextTimeAsString = formatter.string(from: nextTime)
+        let time = timeCalculator(dateFormat: "MM/dd/yyyy hh:mm:ss a", endTime: nextTimeAsString)
+
+        timeOfNextAvailableNewsDrop.text = "\(time.month!) Months \(time.day!) Days \(time.minute!) Minutes \(time.second!) Seconds"
+        
+    }
+    
+    func timeCalculator(dateFormat: String, endTime: String, startTime: Date = Date()) -> DateComponents {
+        /*
+        formatter.dateFormat = dateFormat
+        let _startTime = startTime
+        let _endTime = formatter.date(from: endTime)
+        */
+        
+        let timeDifference = userCalender.dateComponents(requestedComponent, from: _startTime, to: _endTime!)
+        return timeDifference
     }
     
     // sets our table rows to our articles
@@ -136,94 +212,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             articles[18].site + ": " +  articles[18].title,
             articles[19].site + ": " +  articles[19].title
         ]
-    }
-    
-    // Is it time to allow a refresh of the news?
-    func shouldAllowRefresh() -> Bool {
-        
-        let currentDate = Date()
-        let calendar = Calendar.current
-        let currentHour = calendar.component(.hour, from: currentDate)
-        
-        // Gather DateTime of last refresh
-        if let lastDateRefreshed = userDefaults.value(forKey: "dateOfLastTable") {
-            
-            let hourOfLastCheck = calendar.component(.hour, from: lastDateRefreshed as! Date)
-            
-            // If last check received morning news and now it's time for night news
-            // or
-            // If last check received night news but it wasn't today
-            if ( (hourOfLastCheck < 19 && currentHour >= 19) ||
-                (hourOfLastCheck >= 19 && (calendar.isDateInToday(lastDateRefreshed as! Date) == false)) ) {
-                return true
-            }
-                
-            // If last check received night news and now it's time for morning news
-            // or
-            // If last check received morning news but it wasn't today
-            else if ( (hourOfLastCheck >= 19 && currentHour < 19) ||
-                (hourOfLastCheck < 19 && (calendar.isDateInToday(lastDateRefreshed as! Date) == false)) ) {
-                return true
-            }
-                
-            else {
-                displayTimeOfNextRefresh(currentHour: currentHour)
-                return false
-            }
-        }
-        displayTimeOfNextRefresh(currentHour: currentHour)
-        return false
-    }
-    
-    // This is called if it is not time to refresh the news. Displays next time to refresh.
-    func displayTimeOfNextRefresh(currentHour: Int?) {
-    
-        if (currentHour! >= 19) {
-            //Next available drop: 7 am
-            userDefaults.setValue(Date(), forKey: "nextRefreshTime")
-            userDefaults.synchronize()
-        }
-        else if (currentHour! < 19) {
-            //timeOfNextAvailableNewsDrop.text = "Next available drop: 7 pm"
-            // Set timer to tomorrow at 7 am
-        }
-        
-        let timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(timePrinter), userInfo: nil, repeats: true)
-        
-        timer.fire()
-        
-    }
-    
-    @objc func timePrinter(morningNewsIsnext: Bool) -> Void {
-        
-        /*
-        if let nextRefreshTime = userDefaults.value(forKey: "nextRefreshTime") {
-            
-            
-            let oneHourFromNow = calendar.date(byAdding: .hour, value: 2, to: currentDate)
-            // create a date formatter
-            let formatter = DateFormatter()
-            formatter.dateFormat = "MM/dd/yyyy hh:mm:ss a"
-            
-            // convert the date to string using the date formatter
-            let oneHourFromNowAsString = formatter.string(from: oneHourFromNow!)
-            
-            let time = timeCalculator(dateFormat: "MM/dd/yyyy hh:mm:ss a", endTime: oneHourFromNowAsString)
-            timeOfNextAvailableNewsDrop.text = "\(time.month!) Months \(time.day!) Days \(time.minute!) Minutes \(time.second!) Seconds"
-            
-        }
-         */
-        
-    }
-    
-    func timeCalculator(dateFormat: String, endTime: String, startTime: Date = Date()) -> DateComponents {
-        formatter.dateFormat = dateFormat
-        let _startTime = startTime
-        let _endTime = formatter.date(from: endTime)
-        
-        let timeDifference = userCleander.dateComponents(requestedComponent, from: _startTime, to: _endTime!)
-        let sec = timeDifference.second
-        return timeDifference
     }
     
 }

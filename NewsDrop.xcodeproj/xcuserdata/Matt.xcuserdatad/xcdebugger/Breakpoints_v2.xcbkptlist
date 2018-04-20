@@ -74,12 +74,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NewsDrop/ViewController.swift"
-            timestampString = "545796258.496003"
+            timestampString = "545883888.311852"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "166"
-            endingLineNumber = "166"
-            landmarkName = "shouldAllowRefresh()"
+            startingLineNumber = "182"
+            endingLineNumber = "182"
+            landmarkName = "timeCalculator(dateFormat:endTime:startTime:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -90,12 +90,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NewsDrop/ViewController.swift"
-            timestampString = "545796258.4965481"
+            timestampString = "545883888.312301"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "171"
-            endingLineNumber = "171"
-            landmarkName = "shouldAllowRefresh()"
+            startingLineNumber = "183"
+            endingLineNumber = "183"
+            landmarkName = "timeCalculator(dateFormat:endTime:startTime:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -106,12 +106,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NewsDrop/ViewController.swift"
-            timestampString = "545796258.496935"
+            timestampString = "545883888.312647"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "175"
-            endingLineNumber = "175"
-            landmarkName = "shouldAllowRefresh()"
+            startingLineNumber = "185"
+            endingLineNumber = "185"
+            landmarkName = "timeCalculator(dateFormat:endTime:startTime:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -122,11 +122,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NewsDrop/ViewController.swift"
-            timestampString = "545796258.497306"
+            timestampString = "545883888.31294"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "230"
-            endingLineNumber = "230"
+            startingLineNumber = "186"
+            endingLineNumber = "186"
             landmarkName = "timeCalculator(dateFormat:endTime:startTime:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -138,12 +138,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NewsDrop/ViewController.swift"
-            timestampString = "545796258.497559"
+            timestampString = "545883888.313216"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "231"
-            endingLineNumber = "231"
-            landmarkName = "timeCalculator(dateFormat:endTime:startTime:)"
+            startingLineNumber = "144"
+            endingLineNumber = "144"
+            landmarkName = "markThatUserGotNewsAndSetNextDate()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -154,12 +154,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NewsDrop/ViewController.swift"
-            timestampString = "545796258.497822"
+            timestampString = "545883888.313482"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "233"
-            endingLineNumber = "233"
-            landmarkName = "timeCalculator(dateFormat:endTime:startTime:)"
+            startingLineNumber = "140"
+            endingLineNumber = "140"
+            landmarkName = "markThatUserGotNewsAndSetNextDate()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -170,12 +170,76 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NewsDrop/ViewController.swift"
-            timestampString = "545796258.49805"
+            timestampString = "545883888.313741"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "235"
-            endingLineNumber = "235"
-            landmarkName = "timeCalculator(dateFormat:endTime:startTime:)"
+            startingLineNumber = "167"
+            endingLineNumber = "167"
+            landmarkName = "timePrinter()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NewsDrop/ViewController.swift"
+            timestampString = "545883888.314"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "104"
+            endingLineNumber = "104"
+            landmarkName = "shouldAllowRefresh()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NewsDrop/ViewController.swift"
+            timestampString = "545883888.314256"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "88"
+            endingLineNumber = "88"
+            landmarkName = "reloadTableWithNews()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NewsDrop/ViewController.swift"
+            timestampString = "545883888.3145061"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "176"
+            endingLineNumber = "176"
+            landmarkName = "timePrinter()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NewsDrop/ViewController.swift"
+            timestampString = "545883888.314751"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "174"
+            endingLineNumber = "174"
+            landmarkName = "timePrinter()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
