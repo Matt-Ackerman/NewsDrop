@@ -28,13 +28,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     let formatter = DateFormatter()
     let userCalender = Calendar.current;
-    let requestedComponent : Set<Calendar.Component> = [
-        Calendar.Component.month,
-        Calendar.Component.day,
-        Calendar.Component.hour,
-        Calendar.Component.minute,
-        Calendar.Component.second
-    ]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -155,7 +148,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     // This is called if it is not time to refresh the news. Displays next time to refresh.
     func displayTimeOfNextRefresh() {
-    
+
         let timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(timePrinter), userInfo: nil, repeats: true)
         
         timer.fire()
@@ -165,26 +158,27 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     @objc func timePrinter() -> Void {
         
         let nextTime = userDefaults.value(forKey: "nextRefreshTime") as! Date
-            
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MM/dd/yyyy hh:mm:ss a"
-            
-        // convert the date to string using the date formatter
-        let nextTimeAsString = formatter.string(from: nextTime)
-        let time = timeCalculator(dateFormat: "MM/dd/yyyy hh:mm:ss a", endTime: nextTimeAsString)
+        let time = timeCalculator(dateFormat: "yyyy-mm-dd hh:mm:ss a", endTime: nextTime)
 
-        timeOfNextAvailableNewsDrop.text = "\(time.month!) Months \(time.day!) Days \(time.minute!) Minutes \(time.second!) Seconds"
+        timeOfNextAvailableNewsDrop.font = UIFont(name: "Times New Roman", size: 25)
+        timeOfNextAvailableNewsDrop.text = "\(time.hour!):\(time.minute!):\(time.second!)"
         
     }
     
-    func timeCalculator(dateFormat: String, endTime: String, startTime: Date = Date()) -> DateComponents {
-        /*
-        formatter.dateFormat = dateFormat
-        let _startTime = startTime
-        let _endTime = formatter.date(from: endTime)
-        */
+    func timeCalculator(dateFormat: String, endTime: Date, startTime: Date = Date()) -> DateComponents {
         
-        let timeDifference = userCalender.dateComponents(requestedComponent, from: _startTime, to: _endTime!)
+        let requestedComponent : Set<Calendar.Component> = [
+            Calendar.Component.month,
+            Calendar.Component.day,
+            Calendar.Component.hour,
+            Calendar.Component.minute,
+            Calendar.Component.second
+        ]
+        
+        let startTime = startTime
+
+        let timeDifference = userCalender.dateComponents(requestedComponent, from: startTime, to: endTime)
+        
         return timeDifference
     }
     
