@@ -13,6 +13,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     // table to be populated with news articles.
     @IBOutlet weak var tableView: UITableView!
     
+    //
+    @IBOutlet weak var smallCounterExplanation: UILabel!
+    
     // label that changes to countdown for next news release.
     @IBOutlet weak var timeOfNextAvailableNewsDrop: UILabel!
     
@@ -36,6 +39,14 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     // code is ran any time the application has been loaded after being closed.
     override func viewDidLoad() {
         super.viewDidLoad()
+        smallCounterExplanation.isHidden = true
+        
+        navigationController?.navigationBar.titleTextAttributes = [
+            NSAttributedStringKey.font: UIFont(name: "Avenir-Book", size: 25)!
+        ]
+
+        navigationItem.title = "drop"
+        //navigationItem.titleView = UIImageView(image: UIImage(named: "logo1"))
  
         tableView.dataSource = self
         tableView.delegate = self
@@ -61,11 +72,43 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     // generates the cell specification and formatting for each table row.
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        // set cell's text and make the text wrap
+        
         cell.textLabel?.text = String(tableRows[indexPath.row])
         cell.textLabel?.numberOfLines = 0
         cell.textLabel?.lineBreakMode = NSLineBreakMode.byWordWrapping
+        
+        var url:URL
+        if (cell.textLabel?.text?.isEmpty)! {
+            url = URL(string: "https://www.babybedding.com/images/fabric/solid-silver-gray-fabric_large.jpg")!
+        } else {
+            url = URL(string: articles[indexPath.row].imageUrl)!
+        }
+        
+        let imageFromURL = try? Data(contentsOf: url)
+        
+        let uiImage = UIImage(data: imageFromURL!)
+        let resizedImage = resizeImage(image: uiImage!, toTheSize: CGSize(width: 70, height: 70))
+        
+        cell.imageView?.image = resizedImage
+        
         return cell
+    }
+    
+    // resizes a provided image with the provided CGSize (width, height)
+    func resizeImage(image:UIImage, toTheSize size:CGSize)->UIImage{
+    
+        let scale = CGFloat(max(size.width/image.size.width,
+                                size.height/image.size.height))
+        let width:CGFloat  = image.size.width * scale
+        let height:CGFloat = image.size.height * scale;
+        
+        let rr:CGRect = CGRect(x: 0, y: 0, width: width, height: height);
+        
+        UIGraphicsBeginImageContextWithOptions(size, false, 0);
+        image.draw(in: rr)
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext();
+        return newImage!
     }
     
     // on click event for each row which sends user to article url.
@@ -99,7 +142,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             if (dateOfNextNews < Date()) {
                 return true
             } else {
-                return false
+                return true//false
             }
         }
     }
@@ -140,6 +183,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     // this is called if it is not time to refresh the news. starts countdown.
     func displayCountdownToNextRefresh() {
+        smallCounterExplanation.isHidden = false
         let timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(timePrinter), userInfo: nil, repeats: true)
         timer.fire()
     }
@@ -149,7 +193,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let nextTime = userDefaults.value(forKey: "dateOfNextNews") as! Date
         
         let timeDifference = timeCalculator(dateFormat: "yyyy-mm-dd hh:mm:ss a", endTime: nextTime)
-        timeOfNextAvailableNewsDrop.font = UIFont(name: "Times New Roman", size: 25)
+        timeOfNextAvailableNewsDrop.font = UIFont(name: "Avenir-Book", size: 25)
         timeOfNextAvailableNewsDrop.text = "\(timeDifference.hour!):\(timeDifference.minute!):\(timeDifference.second!)"
     }
     

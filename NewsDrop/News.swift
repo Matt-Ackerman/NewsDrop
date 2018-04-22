@@ -12,6 +12,7 @@ struct News {
     let site:String
     let title:String
     let siteUrl:String
+    let imageUrl:String
     
     static let url = "http://192.168.1.3:8999/api"
     
@@ -20,10 +21,12 @@ struct News {
         guard let site = json["site"] as? String else {throw SerializationError.missing("site is missing")}
         guard let title = json["title"] as? String else {throw SerializationError.missing("title is missing")}
         guard let siteUrl = json["url"] as? String else {throw SerializationError.missing("site url is missing")}
+        guard let imageUrl = json["main_image"] as? String else {throw SerializationError.missing("image url is missing")}
         
         self.site = site
         self.title = title
         self.siteUrl = siteUrl
+        self.imageUrl = imageUrl
     }
     
     enum SerializationError:Error {
