@@ -13,7 +13,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     // table to be populated with news articles.
     @IBOutlet weak var tableView: UITableView!
     
-    //
+    // label that explains the countdown.
     @IBOutlet weak var smallCounterExplanation: UILabel!
     
     // label that changes to countdown for next news release.
@@ -27,6 +27,30 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 
     // articles gathered from api.
     var articles = [News]()
+    
+    // list of gray placeholder images to fill the table rows until populated with article images.
+    var articleImages:[UIImage] = [
+        UIImage(named: "gray")!,
+        UIImage(named: "gray")!,
+        UIImage(named: "gray")!,
+        UIImage(named: "gray")!,
+        UIImage(named: "gray")!,
+        UIImage(named: "gray")!,
+        UIImage(named: "gray")!,
+        UIImage(named: "gray")!,
+        UIImage(named: "gray")!,
+        UIImage(named: "gray")!,
+        UIImage(named: "gray")!,
+        UIImage(named: "gray")!,
+        UIImage(named: "gray")!,
+        UIImage(named: "gray")!,
+        UIImage(named: "gray")!,
+        UIImage(named: "gray")!,
+        UIImage(named: "gray")!,
+        UIImage(named: "gray")!,
+        UIImage(named: "gray")!,
+        UIImage(named: "gray")!,
+    ]
     
     // list of empty placeholder strings to fill the table rows until populated with news.
     var tableRows:[String] = [
@@ -76,39 +100,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         cell.textLabel?.text = String(tableRows[indexPath.row])
         cell.textLabel?.numberOfLines = 0
         cell.textLabel?.lineBreakMode = NSLineBreakMode.byWordWrapping
-        
-        var url:URL
-        if (cell.textLabel?.text?.isEmpty)! {
-            url = URL(string: "https://www.babybedding.com/images/fabric/solid-silver-gray-fabric_large.jpg")!
-        } else {
-            url = URL(string: articles[indexPath.row].imageUrl)!
-        }
-        
-        let imageFromURL = try? Data(contentsOf: url)
-        
-        let uiImage = UIImage(data: imageFromURL!)
-        let resizedImage = resizeImage(image: uiImage!, toTheSize: CGSize(width: 70, height: 70))
-        
-        cell.imageView?.image = resizedImage
+        cell.imageView?.image = articleImages[indexPath.row]
         
         return cell
-    }
-    
-    // resizes a provided image with the provided CGSize (width, height)
-    func resizeImage(image:UIImage, toTheSize size:CGSize)->UIImage{
-    
-        let scale = CGFloat(max(size.width/image.size.width,
-                                size.height/image.size.height))
-        let width:CGFloat  = image.size.width * scale
-        let height:CGFloat = image.size.height * scale;
-        
-        let rr:CGRect = CGRect(x: 0, y: 0, width: width, height: height);
-        
-        UIGraphicsBeginImageContextWithOptions(size, false, 0);
-        image.draw(in: rr)
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext();
-        return newImage!
     }
     
     // on click event for each row which sends user to article url.
@@ -153,7 +147,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             for result in results {
                 self.articles.append(result)
             }
-            self.setText()
+            self.fillTableRowsWithArticles()
         }
         markThatUserGotNewsAndSetNextDate()
         displayCountdownToNextRefresh()
@@ -211,8 +205,43 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         return timeDifference
     }
     
+    // retrieves an image from the provided url.
+    func getImageFromURL(urlString: String) -> UIImage {
+        if (urlString.isEmpty) {
+            return UIImage(named: "gray")!
+        } else {
+            let url = URL(string: urlString)!
+            let imageFromURL = try? Data(contentsOf: url)
+            
+            let uiImage = UIImage(data: imageFromURL!)
+            if (uiImage != nil) {
+                let resizedImage = resizeImage(image: uiImage!, toTheSize: CGSize(width: 70, height: 70))
+                return resizedImage
+            } else {
+                return UIImage(named: "gray")!
+            }
+        }
+    }
+    
+    // resizes a provided image with the provided CGSize (width, height)
+    func resizeImage(image:UIImage, toTheSize size:CGSize)->UIImage{
+        
+        let scale = CGFloat(max(size.width/image.size.width,
+                                size.height/image.size.height))
+        let width:CGFloat  = image.size.width * scale
+        let height:CGFloat = image.size.height * scale;
+        
+        let rr:CGRect = CGRect(x: 0, y: 0, width: width, height: height);
+        
+        UIGraphicsBeginImageContextWithOptions(size, false, 0);
+        image.draw(in: rr)
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext();
+        return newImage!
+    }
+    
     // sets our table rows to our articles.
-    func setText() {
+    func fillTableRowsWithArticles() {
         tableRows = [
             articles[0].site + ": " +  articles[0].title,
             articles[1].site + ": " +  articles[1].title,
@@ -234,6 +263,28 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             articles[17].site + ": " +  articles[17].title,
             articles[18].site + ": " +  articles[18].title,
             articles[19].site + ": " +  articles[19].title
+        ]
+        articleImages = [
+            getImageFromURL(urlString: articles[0].imageUrl),
+            getImageFromURL(urlString: articles[1].imageUrl),
+            getImageFromURL(urlString: articles[2].imageUrl),
+            getImageFromURL(urlString: articles[3].imageUrl),
+            getImageFromURL(urlString: articles[4].imageUrl),
+            getImageFromURL(urlString: articles[5].imageUrl),
+            getImageFromURL(urlString: articles[6].imageUrl),
+            getImageFromURL(urlString: articles[7].imageUrl),
+            getImageFromURL(urlString: articles[8].imageUrl),
+            getImageFromURL(urlString: articles[9].imageUrl),
+            getImageFromURL(urlString: articles[10].imageUrl),
+            getImageFromURL(urlString: articles[11].imageUrl),
+            getImageFromURL(urlString: articles[12].imageUrl),
+            getImageFromURL(urlString: articles[13].imageUrl),
+            getImageFromURL(urlString: articles[14].imageUrl),
+            getImageFromURL(urlString: articles[15].imageUrl),
+            getImageFromURL(urlString: articles[16].imageUrl),
+            getImageFromURL(urlString: articles[17].imageUrl),
+            getImageFromURL(urlString: articles[18].imageUrl),
+            getImageFromURL(urlString: articles[19].imageUrl)
         ]
     }
     
